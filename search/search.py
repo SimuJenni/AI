@@ -18,6 +18,7 @@ Pacman agents (in searchAgents.py).
 """
 
 import util
+from sets import Set
 
 class SearchProblem:
     """
@@ -87,13 +88,46 @@ def depthFirstSearch(problem):
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
-
+    node = (problem.getStartState(), [])  
+    frontier = util.Stack()
+    frontier.push(node)
+    explored = Set()
+    while True:
+        if frontier.isEmpty():
+            return []
+        node = frontier.pop()
+        if node[0] not in explored:
+            explored.add(node[0])
+            if problem.isGoalState(node[0]):
+                return node[1]
+            successors = problem.getSuccessors(node[0])
+            successors.reverse()
+            for s in successors:
+                nodeActions = node[1][:]
+                nodeActions.append(s[1])
+                frontier.push((s[0], nodeActions))
+    
 def breadthFirstSearch(problem):
     """Search the shallowest nodes in the search tree first."""
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
-
+    node = (problem.getStartState(), [])  
+    frontier = util.Queue()
+    frontier.push(node)
+    explored = Set()
+    while True:
+        if frontier.isEmpty():
+            return []
+        node = frontier.pop()
+        if node[0] not in explored:
+            explored.add(node[0])
+            if problem.isGoalState(node[0]):
+                return node[1]
+            successors = problem.getSuccessors(node[0])
+            for s in successors:
+                nodeActions = node[1][:]
+                nodeActions.append(s[1])
+                frontier.push((s[0], nodeActions))
+                
 def uniformCostSearch(problem):
     """Search the node of least total cost first."""
     "*** YOUR CODE HERE ***"
