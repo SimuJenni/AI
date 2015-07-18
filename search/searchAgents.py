@@ -386,10 +386,11 @@ def cornersHeuristic(state, problem):
         minDist = sys.maxint
         for corner in corners:
             dist = util.manhattanDistance(pos, corner)
-            if not corner in visitedCorners and dist < minDist:
+            if dist < minDist and not corner in visitedCorners:
                 minDist = dist
-                minCorner = corner
-        visitedCorners = visitedCorners + (minCorner,)
+                minpos = corner
+        visitedCorners = visitedCorners + (minpos,)
+        pos = minpos
         estCost += minDist
             
     return estCost # Default to trivial solution
