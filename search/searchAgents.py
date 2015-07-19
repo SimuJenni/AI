@@ -508,7 +508,7 @@ def foodHeuristic(state, problem):
         dy = d[1] / abs(d[1])
         otherDirY = [food for food in foodList if (food[1] - position[1])*dy<0]
     common = set(otherDirX) & set(otherDirY)
-    return max(maxDist + (len(otherDirX) + len(otherDirY) - len(common)), len(foodList))
+    return maxDist + (len(otherDirX) + len(otherDirY) - len(common))
     
 
 class ClosestDotSearchAgent(SearchAgent):
@@ -540,7 +540,7 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return search.uniformCostSearch(problem)
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
@@ -576,8 +576,8 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x,y = state
 
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
-
+        return self.food[x][y]
+        
 def mazeDistance(point1, point2, gameState):
     """
     Returns the maze distance between any two points, using the search functions
