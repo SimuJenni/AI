@@ -1,3 +1,3 @@
-# AI_Course
+# AI EDX Course
 
-My repo to the AI course at EDX
+Repo to the AI course on EDX
