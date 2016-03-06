@@ -1,0 +1,9 @@
+SCRIPT_AREA_BORDER=\#D8D8D8 | \#272822 | false | false | false | false
+commentBorder=\#B6B3BB | \#272822 | false | false | false | false
+commentText=\#B6B3BB | \#272822 | false | false | false | false
+eclipse.preferences.version=1
+jsp_content=\#F8F8F2 | \#272822 | false | false | false | false
+tagAttributeEquals=\#F8F8F2 | \#272822 | false | false | false | false
+tagAttributeName=\#F92672 | \#272822 | false | false | false | false
+tagAttributeValue=\#E6DB74 | \#272822 | false | false | false | false
+tagBorder=\#66D9EF | \#272822 | false | false | false | false

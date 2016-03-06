@@ -5,7 +5,8 @@
 # solutions, (2) you retain this notice, and (3) you provide clear
 # attribution to UC Berkeley, including a link to http://ai.berkeley.edu.
 #
-# Attribution Information: The Pacman AI projects were developed at UC Berkeley.
+# Attribution Information: The Pacman AI projects were developed at UC
+# Berkeley.
 # The core projects and autograders were primarily created by John DeNero
 # (denero@cs.berkeley.edu) and Dan Klein (klein@cs.berkeley.edu).
 # Student side autograding was added by Brad Miller, Nick Hay, and
@@ -16,6 +17,7 @@ from util import manhattanDistance
 from game import Directions
 import random
 import util
+import math
 
 from game import Agent
 
@@ -34,10 +36,12 @@ class ReflexAgent(Agent):
         """
         You do not need to change this method, but you're welcome to.
 
-        getAction chooses among the best options according to the evaluation function.
+        getAction chooses among the best options according to the evaluation
+        function.
 
-        Just like in the previous project, getAction takes a GameState and returns
-        some Directions.X for some X in the set {North, South, West, East, Stop}
+        Just like in the previous project, getAction takes a GameState and
+        returns some Directions.X for some X in the set {North, South, West,
+        East, Stop}
         """
         # Collect legal moves and successor states
         legalMoves = gameState.getLegalActions()
@@ -60,10 +64,11 @@ class ReflexAgent(Agent):
         Design a better evaluation function here.
 
         The evaluation function takes in the current and proposed successor
-        GameStates (pacman.py) and returns a number, where higher numbers are better.
+        GameStates (pacman.py) and returns a number, where higher numbers are
+        better.
 
-        The code below extracts some useful information from the state, like the
-        remaining food (newFood) and Pacman position after moving (newPos).
+        The code below extracts some useful information from the state, like
+        the remaining food (newFood) and Pacman position after moving (newPos).
         newScaredTimes holds the number of moves that each ghost will remain
         scared because of Pacman having eaten a power pellet.
 
@@ -79,8 +84,57 @@ class ReflexAgent(Agent):
             ghostState.scaredTimer for ghostState in newGhostStates]
 
         "*** YOUR CODE HERE ***"
-        return successorGameState.getScore()
+        # Compute the minimum manhattanDistance to the nearest ghost
+        ghostPositions = successorGameState.getGhostPositions()
+        ghostDists = [
+            manhattanDistance(ghostPosition, newPos) for ghostPosition in
+            ghostPositions]
+        minGhostDist = min(ghostDists)
+        minGhostDist = minGhostDist if minGhostDist < 4.0 else 4.0
+        minIndices = [index for index in range(len(ghostDists)) if ghostDists[
+            index] == minGhostDist]
+        for ind in minIndices:
+            # If we get closer to a scared ghost we're happy :)
+            if newScaredTimes[ind] > 0:
+                minGhostDist = 15.0/minGhostDist
+                break
 
+        # Scared bonus
+        scaredBonus = 0
+        for scaredtime in newScaredTimes:
+            if scaredtime > 0:
+                scaredBonus = 100
+                break
+
+        # Compute minimum distance to next capsule
+        minCapsuleDist = 1
+        capsulePositions = successorGameState.getCapsules()
+        if len(capsulePositions) > 0:
+            capsuleDists = [
+                manhattanDistance(capsulePosition, newPos) for capsulePosition
+                in capsulePositions]
+            minCapsuleDist = min(capsuleDists)
+
+        foodPositions = newFood.asList()
+        foodDists = [
+            manhattanDistance(foodPosition, newPos) for foodPosition in
+            foodPositions]
+        minFoodDist = 1
+        if len(foodDists) > 0:
+            minFoodDist = min(foodDists)
+
+        score = successorGameState.getScore() + minGhostDist + \
+            2.0/minCapsuleDist + 10.0/minFoodDist + scaredBonus
+
+        # # For debugging only
+        # print "==================================="
+        # print "minGhostDist {}".format(minGhostDist)
+        # print "minCapsuleDist {}".format(1.0/minCapsuleDist)
+        # print "minFoodDist {}".format(1.0/minFoodDist)
+        # print "scaredBonus {}".format(scaredBonus)
+        # print "score {}".format(score)
+
+        return score
 
 def scoreEvaluationFunction(currentGameState):
     """
@@ -160,10 +214,11 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
 
     def getAction(self, gameState):
         """
-          Returns the expectimax action using self.depth and self.evaluationFunction
+          Returns the expectimax action using self.depth and
+          self.evaluationFunction
 
-          All ghosts should be modeled as choosing uniformly at random from their
-          legal moves.
+          All ghosts should be modeled as choosing uniformly at random from
+          their legal moves.
         """
         "*** YOUR CODE HERE ***"
         util.raiseNotDefined()
