@@ -13,13 +13,11 @@
 # Pieter Abbeel (pabbeel@cs.berkeley.edu).
 
 
-from util import manhattanDistance
-from game import Directions
 import random
-import util
-import math
 
+import util
 from game import Agent
+from util import manhattanDistance
 
 
 class ReflexAgent(Agent):
@@ -96,7 +94,7 @@ class ReflexAgent(Agent):
         for ind in minIndices:
             # If we get closer to a scared ghost we're happy :)
             if newScaredTimes[ind] > 0:
-                minGhostDist = 15.0/minGhostDist
+                minGhostDist = 15.0 / minGhostDist
                 break
 
         # Scared bonus
@@ -124,7 +122,7 @@ class ReflexAgent(Agent):
             minFoodDist = min(foodDists)
 
         score = successorGameState.getScore() + minGhostDist + \
-            5.0/minCapsuleDist + 10.0/minFoodDist + scaredBonus
+                5.0 / minCapsuleDist + 10.0 / minFoodDist + scaredBonus
 
         # # For debugging only
         # print "==================================="
@@ -135,6 +133,7 @@ class ReflexAgent(Agent):
         # print "score {}".format(score)
 
         return score
+
 
 def scoreEvaluationFunction(currentGameState):
     """
@@ -224,7 +223,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
                 for action in legalMoves:
                     successState = \
                         gameState.generateSuccessor(agentIndex, action)
-                    v = max(v, self.min(successState, curDepth, agentIndex+1))
+                    v = max(v, self.min(successState, curDepth, agentIndex + 1))
                 return v
 
     def min(self, gameState, curDepth, agentIndex):
@@ -239,12 +238,13 @@ class MinimaxAgent(MultiAgentSearchAgent):
                 for action in legalMoves:
                     successState = \
                         gameState.generateSuccessor(agentIndex, action)
-                    if agentIndex == gameState.getNumAgents()-1:
-                        v = min(v, self.max(successState, curDepth+1, 0))
+                    if agentIndex == gameState.getNumAgents() - 1:
+                        v = min(v, self.max(successState, curDepth + 1, 0))
                     else:
                         v = min(v, self.min(successState, curDepth,
-                                agentIndex+1))
+                                            agentIndex + 1))
                 return v
+
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
     """
@@ -285,6 +285,7 @@ def betterEvaluationFunction(currentGameState):
     """
     "*** YOUR CODE HERE ***"
     util.raiseNotDefined()
+
 
 # Abbreviation
 better = betterEvaluationFunction
